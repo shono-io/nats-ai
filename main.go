@@ -3,8 +3,8 @@ Copyright © 2024 Shono <code@shono.io>
 */
 package main
 
-import "nassist/cmd"
+import "natsai/cmd"
 
 func main() {
-	cmd.Execute()
+  cmd.Execute()
 }

@@ -1,4 +1,4 @@
-module nassist
+module natsai
 
 go 1.22.0
 
@@ -8,7 +8,6 @@ require (
 	github.com/nats-io/nats.go v1.34.0
 	github.com/rs/xid v1.5.0
 	github.com/rs/zerolog v1.32.0
-	github.com/shono-io/mini v0.0.0-20240422144546-c95640e64ee8
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 )
