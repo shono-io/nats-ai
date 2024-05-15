@@ -22,6 +22,8 @@ func NewKvThreadStore(bucket string, domain string, opts []nats.Option) (ThreadS
 	var err error
 	ts := &kvThreadStore{}
 
+	//This is a bit awkward since there isnt any context, or nats-connection object, in the
+	//bootstrapping of the app.
 	ts.ctx = context.Background()
 
 	url := os.Getenv("NATS_URL")
@@ -59,7 +61,7 @@ func (ts *kvThreadStore) GetThread(threadID string) (*thread.Thread, error) {
 	if err != nil {
 		return nil, err
 	}
-	t := thread.Thread{}
+	var t thread.Thread
 	if err = json.Unmarshal(v.Value(), &t); err != nil {
 		return nil, err
 	}
