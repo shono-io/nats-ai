@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"time"
 
 	"github.com/henomis/lingoose/thread"
 	"github.com/nats-io/nats.go"
@@ -51,7 +52,10 @@ func NewKvThreadStore(bucket string, domain string, opts []nats.Option) (ThreadS
 }
 
 func (ts *kvThreadStore) GetThread(threadID string) (*thread.Thread, error) {
-	v, err := ts.kv.Get(ts.ctx, threadID)
+	ctx, cancel := context.WithTimeout(ts.ctx, time.Second*5)
+	defer cancel()
+
+	v, err := ts.kv.Get(ctx, threadID)
 	if err != nil {
 		return nil, err
 	}
@@ -63,11 +67,14 @@ func (ts *kvThreadStore) GetThread(threadID string) (*thread.Thread, error) {
 }
 
 func (ts *kvThreadStore) StoreThread(threadID string, thread *thread.Thread) error {
+	ctx, cancel := context.WithTimeout(ts.ctx, time.Second*5)
+	defer cancel()
+
 	j, err := json.Marshal(thread)
 	if err != nil {
 		return err
 	}
-	if _, err := ts.kv.Put(ts.ctx, threadID, j); err != nil {
+	if _, err := ts.kv.Put(ctx, threadID, j); err != nil {
 		return err
 	}
 	return nil
